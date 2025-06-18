@@ -1,10 +1,10 @@
 FROM php:8.3-apache
 
-# Install system dependencies
+# Install dependencies for GD and other extensions
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
     libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
     libzip-dev \
     zip \
     unzip \
@@ -12,15 +12,15 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install \
+    && docker-php-ext-install -j$(nproc) \
+    gd \
     pdo \
     pdo_mysql \
     mysqli \
     mbstring \
     zip \
-    gd \
-    curl \
     xml \
+    curl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache mod_rewrite
