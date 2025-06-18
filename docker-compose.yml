@@ -1,11 +1,11 @@
 services:
   apache-php:
+    container_name: apache-php
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: apache-php
     ports:
-      - "8280:80"
+      - "8080:80"
     volumes:
       - ./html:/var/www/html
     environment:
