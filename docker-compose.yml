@@ -1,15 +1,12 @@
-version: '3.8'
-
 services:
   apache-php:
-    image: php:8.3-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: apache-php
     ports:
-      - "8080:80"
+      - "8280:80"
     volumes:
       - ./html:/var/www/html
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
-    build:
-      context: .
-      dockerfile: dockerfile
