@@ -10,3 +10,31 @@ services:
       - ./html:/var/www/html
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
+
+  db:
+    image: mariadb:11
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      # Root admin credentials
+      MARIADB_ROOT_PASSWORD: rootpass
+      MARIADB_DATABASE: appdb   # optional: auto-create a default DB
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: rootpass
+      UPLOAD_LIMIT: 512M
+    ports:
+      - "8081:80"
+
+volumes:
+  db_data:
